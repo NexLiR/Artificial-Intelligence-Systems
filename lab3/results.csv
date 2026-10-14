@@ -1,0 +1,13 @@
+variant,description,context_len,n_heads,n_layers,embed_dim,dropout,learning_rate,lr_decay,max_iters,params,best_val_loss,best_iter,train_minutes,section,model,model_id,params_m,exact_match,f1,ms_per_question,setting
+v1,baseline,64.0,4.0,4.0,128.0,0.1,0.0003,False,8000.0,4912000.0,4.7804,7999.0,6.8,3 mini-GPT,,,,,,,
+v2,context128,128.0,4.0,4.0,128.0,0.1,0.0003,False,8000.0,4920192.0,4.6346,7750.0,13.4,3 mini-GPT,,,,,,,
+v3,layers8,64.0,4.0,8.0,128.0,0.1,0.0003,False,8000.0,5703552.0,4.5918,7999.0,9.9,3 mini-GPT,,,,,,,
+v4,tuned,128.0,8.0,6.0,256.0,0.2,0.0006,True,8000.0,12975232.0,3.9392,7250.0,33.6,3 mini-GPT,,,,,,,
+,,,,,,,,,,,,,,5.2 QA models,xlm-roberta-base,deepset/xlm-roberta-base-squad2,277.0,47.4,84.2,12.0,
+,,,,,,,,,,,,,,5.2 QA models,mdeberta-v3-base,timpal0l/mdeberta-v3-base-squad2,278.0,42.1,74.6,28.3,
+,,,,,,,,,,,,,,5.2 QA models,xlm-roberta-large,deepset/xlm-roberta-large-squad2,559.0,42.1,80.9,19.2,
+,,,,,,,,,,,,,,5.3 QA settings,xlm-roberta-base,,,47.4,84.2,11.7,default
+,,,,,,,,,,,,,,5.3 QA settings,xlm-roberta-base,,,31.6,74.7,11.2,max_answer_len=3
+,,,,,,,,,,,,,,5.3 QA settings,xlm-roberta-base,,,47.4,84.2,11.3,max_answer_len=30
+,,,,,,,,,,,,,,5.3 QA settings,xlm-roberta-base,,,47.4,84.2,11.0,handle_impossible_answer=True
+,,,,,,,,,,,,,,5.3 QA settings,xlm-roberta-base,,,47.4,84.2,21.0,max_seq_len=48
