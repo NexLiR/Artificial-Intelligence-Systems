@@ -1,0 +1,8 @@
+Яка столиця Австралії? /no_think
+Поясни в трьох реченнях, що таке квантизація моделі. /no_think
+Напиши короткий лист викладачеві з проханням перенести здачу лабораторної на тиждень. /no_think
+Explain in two sentences why the sky is blue. /no_think
+Склади план підготовки до іспиту з програмування на 5 днів. /no_think
+Write a Python function that checks whether a string is a palindrome. /no_think
+Перелічи три переваги й три недоліки локального запуску моделей. /no_think
+Translate into Ukrainian: The meeting has been moved to Thursday. /no_think

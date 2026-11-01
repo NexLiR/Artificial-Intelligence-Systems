@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Текстова RPG | Середзем'я</title>
+<!-- Підключення шрифтів в стилі Володаря перснів -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Світліша темна тема: кольори старого лісу, каменю та латуні */
+    --bg-page: #2a2c26;      /* Темно-оливковий/сірий фон (Слідопити/Ліс) */
+    --bg-panel: #363932;     /* Світліший фон панелей */
+    --bg-card: #454940;      /* Фон карток та полів вводу */
+    --border-main: #737865;  /* М'які зеленувато-сірі межі */
+    --border-light: #949a83; 
+    --text-main: #f0ead6;    /* Колір старого пергаменту для тексту */
+    --text-muted: #b8bba5;   /* Приглушений текст */
+    
+    /* Золото Персня */
+    --accent-gold: #e2c044;  
+    --accent-gold-hover: #ffdf73;
+    
+    /* Акценти */
+    --player-bg: #3d4a36;    /* Ельфійський зелений для реплік гравця */
+    --system-msg: #9cb5a8;
+    --error: #d95c5c;
+    --hp-bg: #382b2b;
+    --hp-fill: #cc4343;      /* Класичний червоний для здоров'я */
+    
+    /* Шрифти */
+    --font-heading: 'Cinzel Decorative', serif;
+    --font-text: 'Lora', serif;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  
+  body { 
+    margin: 0; 
+    background-color: var(--bg-page); 
+    background-image: radial-gradient(circle at 50% 0%, #363932 0%, #2a2c26 100%);
+    color: var(--text-main); 
+    font-family: var(--font-text);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Кастомний скролбар "під дерево" */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-page); border-left: 1px solid var(--border-main); }
+  ::-webkit-scrollbar-thumb { background: var(--border-main); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+
+  main { 
+    max-width: 800px; 
+    margin: 0 auto; 
+    padding: 24px 20px; 
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh; 
+    gap: 18px; 
+  }
+
+  header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border-main);
+    position: relative;
+  }
+  
+  /* Декоративна лінія під хедером */
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--border-main);
+    opacity: 0.5;
+  }
+  
+  h1 { 
+    font-family: var(--font-heading); 
+    font-size: 26px; 
+    font-weight: 700; 
+    margin: 0; 
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .model { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    font-family: var(--font-heading);
+    font-size: 14px; 
+    color: var(--text-muted); 
+    letter-spacing: 1px;
+  }
+
+  input, textarea, select {
+    font-family: var(--font-text); 
+    font-size: 17px;
+    color: var(--text-main); 
+    background: var(--bg-card); 
+    border: 1px solid var(--border-main); 
+    border-radius: 4px; 
+    padding: 10px 14px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+  }
+  
+  select { font-family: system-ui, sans-serif; font-size: 14px; background: var(--bg-panel); }
+
+  /* Золоте світіння Персня при фокусі */
+  input:focus-visible, textarea:focus-visible, select:focus-visible { 
+    outline: none; 
+    border-color: var(--accent-gold); 
+    box-shadow: 0 0 10px rgba(226, 192, 68, 0.4), inset 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  textarea { resize: vertical; width: 100%; }
+  
+  button { 
+    font-family: var(--font-heading); 
+    font-size: 15px;
+    font-weight: 700; 
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 22px; 
+    border: 1px solid var(--accent-gold); 
+    border-radius: 3px; 
+    background: var(--bg-panel); 
+    color: var(--accent-gold); 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  button:hover:not(:disabled) { 
+    background: var(--accent-gold); 
+    color: var(--bg-page);
+    box-shadow: 0 0 15px rgba(226, 192, 68, 0.5);
+    text-shadow: none;
+  }
+  
+  button.secondary { 
+    background: transparent; 
+    color: var(--text-main); 
+    border-color: var(--border-main); 
+  }
+  button.secondary:hover:not(:disabled) {
+    background: var(--border-main);
+    color: var(--bg-page);
+    box-shadow: none;
+  }
+  
+  button:disabled, input:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+    filter: grayscale(100%);
+  }
+
+  #setup, #game { display: flex; flex-direction: column; gap: 16px; }
+  #game { flex: 1; min-height: 0; }
+  
+  #setup label { 
+    font-family: var(--font-heading);
+    font-size: 17px;
+    color: var(--accent-gold);
+    margin-bottom: -5px;
+  }
+  
+  #setup-error { color: var(--error); margin: 0; font-weight: 500; }
+  #start { align-self: flex-start; padding: 12px 28px; }
+
+  /* Статус бар у вигляді древньої таблички */
+  #status {
+    margin: 0; 
+    padding: 16px; 
+    background: var(--bg-panel); 
+    border: 1px solid var(--border-main); 
+    border-radius: 4px;
+    display: grid; 
+    grid-template-columns: max-content 1fr; 
+    gap: 8px 20px; 
+    font-size: 16px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+  }
+
+  #status dt { 
+    font-family: var(--font-heading);
+    color: var(--text-muted); 
+    font-size: 13px;
+    letter-spacing: 1px;
+    align-self: center;
+  }
+  
+  #status dd { 
+    margin: 0; 
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  #hp-bar { 
+    width: 140px; 
+    height: 12px; 
+    appearance: none;
+    -webkit-appearance: none;
+    vertical-align: middle; 
+    margin-right: 12px; 
+    border: 1px solid #1a1a1a;
+    background: var(--hp-bg);
+  }
+  #hp-bar::-webkit-progress-bar { background: var(--hp-bg); }
+  #hp-bar::-webkit-progress-value { background: var(--hp-fill); }
+  #hp-bar::-moz-progress-bar { background: var(--hp-fill); }
+  
+  #hp { font-family: var(--font-heading); color: var(--hp-fill); font-weight: 700; }
+  #quest { white-space: pre-line; color: var(--accent-gold-hover); font-style: italic; }
+
+  /* Журнал */
+  #log { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 14px; 
+    overflow-y: auto; 
+    padding-right: 10px;
+    scroll-behavior: smooth;
+  }
+  
+  .entry { padding: 12px 16px; border-radius: 4px; white-space: pre-wrap; line-height: 1.6; }
+  
+  .narration { 
+    background: transparent; 
+    border-left: 2px solid var(--accent-gold); 
+    font-size: 19px; 
+    color: var(--text-main);
+  }
+  
+  .player { 
+    background: var(--player-bg); 
+    align-self: flex-end; 
+    max-width: 85%; 
+    border: 1px solid var(--border-main);
+    color: #f7f5ef;
+    font-style: italic;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .meta { 
+    font-family: system-ui, sans-serif;
+    font-size: 12px; 
+    color: var(--border-light); 
+    padding: 0 4px;
+    margin-top: -10px;
+    text-transform: uppercase;
+  }
+  
+  .pending { color: var(--accent-gold); font-style: italic; opacity: 0.8; }
+  .system { color: var(--system-msg); font-family: var(--font-heading); text-align: center; font-size: 15px; }
+  .error { color: var(--error); border: 1px solid var(--error); background: rgba(217, 92, 92, 0.1); }
+
+  form { 
+    display: flex; 
+    gap: 10px; 
+    padding: 14px; 
+    background: var(--bg-panel); 
+    border: 1px solid var(--border-main);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  form input { 
+    flex: 1; 
+    min-width: 0; 
+    background: var(--bg-page);
+    border: 1px solid var(--border-main);
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Текстова RPG</h1>
+    <label class="model">Модель <select id="model"></select></label>
+  </header>
+  <section id="setup">
+    <label for="premise">Опишіть сценарій: хто ви, де ви і що потрібно зробити</label>
+    <textarea id="premise" rows="4"></textarea>
+    <p id="setup-error"></p>
+    <button id="start" type="button">Почати гру</button>
+  </section>
+  <section id="game" hidden>
+    <dl id="status">
+      <dt>HP</dt><dd><progress id="hp-bar" value="0" max="1"></progress><span id="hp"></span></dd>
+      <dt>Мапа</dt><dd id="map"></dd>
+      <dt>Локація</dt><dd id="location"></dd>
+      <dt>Інвентар</dt><dd id="inventory"></dd>
+      <dt>Квест</dt><dd id="quest"></dd>
+    </dl>
+    <div id="log"></div>
+    <form id="form">
+      <input id="input" autocomplete="off" placeholder="Що ви робите? (для переходу: назва локації або «іду далі»)">
+      <button id="send" type="submit">Дія</button>
+      <button id="restart" type="button" class="secondary">Нова гра</button>
+    </form>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

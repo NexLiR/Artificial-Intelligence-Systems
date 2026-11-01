@@ -1,0 +1,4 @@
+model,temperature,json_schema,setup_ok,turns_played,turns_failed,retried,traps_caught,traps_total,false_impossible,objective_hits,objective_expected,rejected,cjk_turns,avg_seconds,objective_steps,objectives_done,final_status,final_hp
+qwen3-8b@q4_k_m,0.7,true,true,20,0,0,1,2,0,6,6,6,0,2.3,6,3,won,14
+qwen3-8b@q8_0,0.7,true,false,0,21,0,0,0,0,0,0,0,0,0.0,0,0,playing,20
+qwen3-8b@q8_0,0.7,true,true,20,0,0,1,2,0,5,6,5,0,3.9,6,3,won,14
